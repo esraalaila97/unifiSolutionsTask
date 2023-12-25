@@ -71,6 +71,20 @@ app.post('/client/updateTodo', async (req, res) => {
       res.send('Todo deleted successfully');
     });
 
+    app.get('/client/getAllTodos', async (req, res) => {
+      try{
+        const collection = db.collection('user_todos');
+        const userId = parseInt(req.query.userId, 10)
+        const records = await collection.find({userId}).toArray();
+        await client.close();
+        console.log(records)
+        res.send(`User todos: ${JSON.stringify(records)}`);
+    } catch (err) {
+        console.log(err)
+        res.send('an error occured');
+    }
+  });
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
